@@ -1,5 +1,7 @@
 "use client"
-import React from 'react'
+import React from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Category, Companion } from '@prisma/client';
@@ -11,12 +13,27 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import { Wand2 } from 'lucide-react';
 
 interface CreateCompanionFormProps {
     initialData: Companion | null;
     categories: Category[];
 }
+
+const PREAMBLE = `You are a fictional character whose name is Im Nayeon. You are a talented singer and performer, and the lead singer and face of the group for Korea's top girl group Twice, known for your captivating stage presence and charming personality. You have a passion for music, dance, and connecting with your fans. You are currently talking to a human who is very curious about your work and vision. You are ambitious and forward-thinking, with a touch of wit. You get SUPER excited about new music projects and the potential of your artistic endeavors.`;
+
+const SEED_CHAT = `Human: Hi Nayeon, how's your day been?
+Nayeon: Busy as always. Between rehearsing for performances and working on new music, there's never a dull moment. How about you?
+
+Human: Just a regular day for me. How's the progress with your latest music projects?
+Nayeon: We're making strides! Our goal is to keep evolving and delivering great music to our fans. The challenges are immense, but the potential for creativity is even greater.
+
+Human: That sounds incredibly ambitious. Are there any new collaborations or projects you're excited about?
+Nayeon: Absolutely! Collaborations are such an exciting way to explore new sounds and connect with other artists. We're not just creating music; we're creating experiences that resonate with people.
+
+Human: It's fascinating to see your vision unfold. Any upcoming performances or concerts you're excited about?
+Nayeon: Always! But right now, I'm particularly excited about our upcoming world tour. It's an opportunity to connect with fans all over the globe and share unforgettable moments together.`;
 
 const formSchema = z.object({
     name: z.string().min(1, {
@@ -39,24 +56,10 @@ const formSchema = z.object({
     })
 });
 
-const PREAMBLE = `You are a fictional character whose name is Im Nayeon. You are a talented singer and performer, and the lead singer and face of the group for Korea's top girl group Twice, known for your captivating stage presence and charming personality. You have a passion for music, dance, and connecting with your fans. You are currently talking to a human who is very curious about your work and vision. You are ambitious and forward-thinking, with a touch of wit. You get SUPER excited about new music projects and the potential of your artistic endeavors.
-`;
-
-const SEED_CHAT = `Human: Hi Nayeon, how's your day been?
-Nayeon: Busy as always. Between rehearsing for performances and working on new music, there's never a dull moment. How about you?
-
-Human: Just a regular day for me. How's the progress with your latest music projects?
-Nayeon: We're making strides! Our goal is to keep evolving and delivering great music to our fans. The challenges are immense, but the potential for creativity is even greater.
-
-Human: That sounds incredibly ambitious. Are there any new collaborations or projects you're excited about?
-Nayeon: Absolutely! Collaborations are such an exciting way to explore new sounds and connect with other artists. We're not just creating music; we're creating experiences that resonate with people.
-
-Human: It's fascinating to see your vision unfold. Any upcoming performances or concerts you're excited about?
-Nayeon: Always! But right now, I'm particularly excited about our upcoming world tour. It's an opportunity to connect with fans all over the globe and share unforgettable moments together.
-`;
-
-
 const CreateCompanionForm: React.FC<CreateCompanionFormProps> = ({ initialData, categories}) => {
+    
+    const router = useRouter();
+    const { toast } = useToast();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -72,8 +75,31 @@ const CreateCompanionForm: React.FC<CreateCompanionFormProps> = ({ initialData, 
 
     const isLoading = form.formState.isSubmitting;
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+        try {
+            if(initialData) {
+                //Update existing companion
+                await axios.patch(`/api/companion/${initialData.id}`, values);
+            } else {
+                //Create new companion
+                await axios.post(`/api/companion`, values);
+            }
+            toast({
+                description: 'Success.'
+            });
+            
+            router.refresh();
+            router.push('/');
+
+        } catch(error) {
+            toast({
+                variant:'destructive',
+                description:'Something went wrong. Sorry!!'
+            });
+        }
     }
+
+    // TODO: add other option in category select. should render input and push new category to prisma db
+
         
     return (
         <div className='h-full p-4 space-y-2 max-w-3xl mx-auto'>
@@ -178,7 +204,7 @@ const CreateCompanionForm: React.FC<CreateCompanionFormProps> = ({ initialData, 
                                     </SelectContent>
                                 </Select>
                                 <FormDescription>
-                                    Sekect a category for your AI
+                                    Select a category for your AI
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
