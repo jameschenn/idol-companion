@@ -25,6 +25,7 @@ const SearchInput = () => {
     // }
 
     useEffect(() => {
+
         const query = {
             name: debouncedValue,
             categoryId: categoryId,
@@ -33,9 +34,10 @@ const SearchInput = () => {
         const url = qs.stringifyUrl({
             url: window.location.href,
             query,
-        }, {skipEmptyString: true, skipNull: true});
+        }, {skipEmptyString: true, skipNull: true}); //removes from URL if query is "" or null
 
         router.push(url);
+
     }, [debouncedValue, router, categoryId]);
 
   return (
