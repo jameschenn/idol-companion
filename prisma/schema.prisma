@@ -36,6 +36,8 @@ model Companion {
   category      Category  @relation(fields: [categoryId], references: [id])
   categoryId    String
 
+  messages  Message[]
+
   @@index([categoryId])
 
   //TODO: FULL-TEXT SEARCH. Prisma doesn't support for Postgres databases
@@ -43,4 +45,25 @@ model Companion {
   // @@fulltext([name])
 
 
+}
+
+//Message will sent from user or system for message model
+enum Role {
+  user
+  system
+}
+
+model Message {
+  id  String  @id @default(uuid())
+  role  Role
+  content String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  companionId String
+  userId  String
+
+  companion Companion @relation(fields: [companionId], references: [id], onDelete: Cascade)
+
+  @@index([companionId])
 }
