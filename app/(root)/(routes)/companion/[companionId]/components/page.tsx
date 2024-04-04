@@ -83,6 +83,7 @@ const CreateCompanionForm: React.FC<CreateCompanionFormProps> = ({ initialData, 
                 //Create new companion
                 await axios.post(`/api/companion`, values);
             }
+            
             toast({
                 description: 'Success.'
             });
