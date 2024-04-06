@@ -45,7 +45,7 @@ const ChatMessages: React.FC<ChatMessagesProp> = ({ companion, isLoading, messag
                 key={message.content}
                 role={message.role}
                 content={message.content}
-                src={message.src}
+                src={companion.src}
             />
         ))}
         {/*for when AI is thinking... 🧠*/}
