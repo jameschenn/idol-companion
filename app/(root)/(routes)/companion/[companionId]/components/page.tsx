@@ -239,7 +239,7 @@ const CreateCompanionForm: React.FC<CreateCompanionFormProps> = ({ initialData, 
                                     />
                                 </FormControl>
                                 <FormDescription>
-                                    Describe in detail your companion's backgstory and reveland details
+                                    Describe in detail your companion&apos;s backstory and relevant details
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
@@ -261,7 +261,7 @@ const CreateCompanionForm: React.FC<CreateCompanionFormProps> = ({ initialData, 
                                     />
                                 </FormControl>
                                 <FormDescription>
-                                    Describe in detail your companion's backgstory and reveland details
+                                    Describe in detail how you and your companion would react and speak to each other
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
