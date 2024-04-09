@@ -26,7 +26,7 @@ const Companions: React.FC<CompanionProps> = ({ data }) => {
                         src='/placeholder.svg'
                     />
                 </div>
-                <p className='text-sm text-muted-foreground'>No idols found.</p>
+                <p className='text-sm text-muted-foreground'>No companions found.</p>
             </div>
         )
     }

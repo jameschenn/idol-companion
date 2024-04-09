@@ -6,11 +6,14 @@ async function main() {
     try {
         await db.category.createMany({
             data: [
-                {name: "TWICE"},
-                {name: "BLACKPINK"},
-                {name: "LE SSERAFIM"},
+                { name: 'Kpop Idols' },
+                { name: 'Actors' },
+                { name: 'Anime & Games' },
+                { name: 'Animals' },
             ]
         })
+
+        // await db.companion.deleteMany();
     } catch(error) {
         console.error('Error seeding default categories' ,error)
     } finally {
