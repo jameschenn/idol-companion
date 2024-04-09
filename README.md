@@ -2,7 +2,7 @@
 
 The "Idol Companion" project aims to provide users with an immersive experience of engaging with AI counterparts of notable figures. Users can interact with these AI characters by providing background information about their desired character. The system then generates responses from the AI character based on the provided information and predefined conversational patterns.
 
-![Idol Companion](/idol-companion/public/image-preview.png)
+![Idol Companion Image Preview](https://raw.githubusercontent.com/jameschenn/idol-companion/main/public/image-preview.png)
 
 ## How to use
 

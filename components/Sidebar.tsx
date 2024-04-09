@@ -26,12 +26,12 @@ const Sidebar = () => {
             label: 'Create',
             protectedRoute: true,
         },
-        {
-            icon: Settings,
-            href: '/settings',
-            label: 'Settings',
-            protectedRoute: false,
-        }
+        // {
+        //     icon: Settings,
+        //     href: '/settings',
+        //     label: 'Settings',
+        //     protectedRoute: false,
+        // }
     ]
 
 
